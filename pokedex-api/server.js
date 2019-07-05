@@ -4,16 +4,29 @@ const morgan = require('morgan');
 
 console.log(process.env.API_TOKEN);
 
-const app = express()
+const app = express();
 
-app.use(morgan('dev'))
+app.use(morgan('dev'));
+app.use(function validateBearerToken(req, res, next) {
+    console.log('validate bearer token middleware')
+    const authToken = req.get('Authorization')
+    const apiToken = process.env.API_TOKEN;
+    if (!authToken || authToken.split(' ')[1] !== apiToken) {
+        return res.status(401).json({ error: 'Unauthorized request' })
+    }
+    next()
+});
 
+
+// GET POKEMON TYPES
 const validTypes = [`Bug`, `Dark`, `Dragon`, `Electric`, `Fairy`, `Fighting`, `Fire`, `Flying`, `Ghost`, `Grass`, `Ground`, `Ice`, `Normal`, `Poison`, `Psychic`, `Rock`, `Steel`, `Water`];
 function handleGetTypes(req, res) {
     res.json(validTypes);
 };
 app.get('/types', handleGetTypes);
 
+
+// GET POKEMON
 function handleGetPokemon(req, res) {
     res.send('Hello, Pokemon!')
 };
