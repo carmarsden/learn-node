@@ -4,9 +4,10 @@
     "description": "",
     "main": "index.js",
     "scripts": {
-        "start": "node src/practice.js",
-        "dev": "nodemon src/practice.js",
+        "start": "node src/blogful.js",
+        "dev": "nodemon src/blogful.js",
         "test": "mocha --require test/setup.js",
+        "test:watch": "mocha --require ./test/setup.js --watch ./test ./",
         "predeploy": "npm audit",
         "deploy": "git push heroku master"
     },
